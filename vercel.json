@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/[[...path]].js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/health.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/health",
+      "dest": "/api/health.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/[[...path]].js"
+    },
+    {
+      "src": "/photos/(.*)",
+      "dest": "/backend/photos/$1"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/dist/assets/$1",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/(.+\\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
+      "dest": "/dist/$1",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/",
+      "dest": "/dist/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/[[...path]].js"
+    }
+  ]
+}
